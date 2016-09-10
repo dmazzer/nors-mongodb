@@ -37,21 +37,30 @@ $ cd nors-mongodb
 $ docker build --rm -t nors-mongodb .
 ```
 
+Create a directory to persist MongoDB storage files:
+
+```
+$ sudo mkdir -p /opt/nors/db
+$ chown -R [user]:[user] /opt/nors/db
+```
+
 Run the container:
 
 This command will start the mongodb server for the first time and will map the container port 27017 to host port 47017:
 
 ```
-$ docker run -rm -ti --name=nors-mongodb -p 47017:27017 nors-mongodb
+$ docker run -rm -ti --name=nors-mongodb -p 47017:27017 -v /opt/nors/db nors-mongodb
 ```
 
 After the first time the container named as nors-mongodb was used, it can be started as a daemon with the command:
 
 ```
-$ docker run -ti -d -p 47017:27017 nors-mongodb
+$ docker run -ti -d -p 47017:27017 -v /opt/nors/db:/data/db nors-mongodb
 ```
 
-Access mongodb-server from the host to test the container:
+If _-v_ flag is omitted the MongoDB database will be lost when the container is shutdown.
+
+To test the container access mongodb-server from the host:
 
 ```
 $ mongo localhost:47017
