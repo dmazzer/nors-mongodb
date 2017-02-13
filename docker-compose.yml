@@ -1,0 +1,8 @@
+version: '2'
+services:
+  db:
+    build: .
+    ports:
+     - "47017:27017"
+    volumes:
+     - .:/opt/nors/db

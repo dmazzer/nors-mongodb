@@ -60,10 +60,10 @@ COPY set_mongodb_password.sh /set_mongodb_password.sh
 WORKDIR /data
 
 #ENTRYPOINT ["/usr/local/bin/gosu" "mongodb" "/usr/bin/mongod"]
-#ENTRYPOINT ["/usr/local/bin/gosu" "mongodb" "/usr/bin/mongod"]
 
 # Enable this entrypoint to create a random password for MongoDB database at
 # first run
 #ENTRYPOINT ["/run.sh"]
+ENTRYPOINT ["/usr/local/bin/gosu" "mongodb" "/run.sh"]
 
-CMD ["/bin/bash"]
+#CMD ["/bin/bash"]
