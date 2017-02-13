@@ -1,22 +1,35 @@
 #!/bin/bash
+set -m
 set -e
 
-if [ "${1:0:1}" = '-' ]; then
-	set -- mongod "$@"
+##
+
+mongodb_cmd="mongod --storageEngine $STORAGE_ENGINE"
+#cmd="$mongodb_cmd --httpinterface --rest --master"
+cmd="$mongodb_cmd --rest --master"
+if [ "$AUTH" == "yes" ]; then
+    cmd="$cmd --auth"
 fi
 
-# allow the container to be started with `--user`
-if [ "$1" = 'mongod' -a "$(id -u)" = '0' ]; then
-	chown -R mongodb /data/configdb /data/db
-	exec gosu mongodb "$BASH_SOURCE" "$@"
+if [ "$JOURNALING" == "no" ]; then
+    cmd="$cmd --nojournal"
 fi
 
-if [ "$1" = 'mongod' ]; then
-	numa='numactl --interleave=all'
-	if $numa true &> /dev/null; then
-		set -- $numa "$@"
-	fi
+if [ "$OPLOG_SIZE" != "" ]; then
+    cmd="$cmd --oplogSize $OPLOG_SIZE"
 fi
 
-exec "$@"
+##
+
+exec gosu "$cmd"
+
+##
+
+if [ ! -f /data/db/.mongodb_password_set ]; then
+    /set_mongodb_password.sh
+fi
+
+##
+
+fg
 
