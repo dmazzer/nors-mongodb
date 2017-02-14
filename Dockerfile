@@ -56,6 +56,7 @@ ENV JOURNALING yes
 
 COPY run.sh /run.sh
 COPY set_mongodb_password.sh /set_mongodb_password.sh
+COPY docker-entrypoint.sh /entrypoint.sh
 
 WORKDIR /data
 
@@ -64,6 +65,6 @@ WORKDIR /data
 # Enable this entrypoint to create a random password for MongoDB database at
 # first run
 #ENTRYPOINT ["/run.sh"]
-ENTRYPOINT ["/usr/local/bin/gosu" "mongodb" "/run.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 #CMD ["/bin/bash"]

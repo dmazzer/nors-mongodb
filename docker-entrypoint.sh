@@ -6,7 +6,7 @@ set -e
 
 mongodb_cmd="mongod --storageEngine $STORAGE_ENGINE"
 #cmd="$mongodb_cmd --httpinterface --rest --master"
-cmd="$mongodb_cmd --rest --master"
+cmd="$mongodb_cmd --master"
 if [ "$AUTH" == "yes" ]; then
     cmd="$cmd --auth"
 fi
@@ -21,7 +21,9 @@ fi
 
 ##
 
-exec gosu "$cmd"
+echo "starting mongodb"
+chown -R mongodb /data/configdb /data/db
+exec gosu mongodb $cmd &
 
 ##
 
