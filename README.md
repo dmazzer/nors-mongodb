@@ -55,7 +55,7 @@ $ docker run --rm -ti --name=nors-mongodb -p 47017:27017 -v /opt/nors/db nors-mo
 After the first time the container named as nors-mongodb was used, it can be started as a daemon with the command:
 
 ```
-$ docker run -ti -d -p 47017:27017 -v /opt/nors/db:/data/db nors-mongodb
+$ docker run -ti -d -p 47017:27017 -v /opt/nors/db:/data/db -v /opt/nors/configdb:/data/configdb nors-mongodb
 ```
 
 If _-v_ flag is omitted the MongoDB database will be lost when the container is shutdown.
