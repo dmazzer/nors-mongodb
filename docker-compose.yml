@@ -1,8 +1,9 @@
 version: '2'
 services:
-  db:
+  mongodb:
     build: .
-    ports:
-     - "47017:27017"
+    ports: 
+      - "47017:27017"
     volumes:
-     - .:/opt/nors/db
+      - /opt/nors/db:/data/db
+      - /opt/nors/configdb:/data/configdb
